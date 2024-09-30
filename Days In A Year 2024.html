@@ -1,0 +1,167 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<title>Days in a Year - 2024</title>
+	<style>
+		body {
+			margin: 0;
+			padding: 0;
+		}
+		.nav-bar {
+			position: fixed;
+			top: 0;
+			left: 0;
+			width: 30px;
+			height: 100vh;
+			background-color: #fff;
+			border-right: 1px solid #000;
+			display: flex;
+			flex-direction: column;
+			align-items: center;
+			padding: 20px;
+		}
+		.nav-button {
+			width: 18px;
+			height: 18px;
+			border-radius: 50%;
+			margin: 15px auto;
+			cursor: pointer;
+		}
+		.nav-button:hover {
+			box-shadow: 0 0 5px rgba(0, 0, 0, 0.5);
+		}
+		#color-1 {
+			background-color: #B74F6F;
+		}
+		#color-2 {
+			background-color: #ADBDFF;
+		}
+		#color-3 {
+			background-color: #3185FC;
+		}
+		#color-4 {
+			background-color: #34E5FF;
+		}
+		#color-5 {
+			background-color: #35281D;
+		}
+		h1 {
+			text-align: center;
+			margin-top: 20px;
+		}
+		table {
+			border-collapse: collapse;
+			margin: 20px auto;
+			border: 3px solid #000; /* thickened border */
+		}
+		td {
+			width: 25px;
+			height: 25px;
+			border: 3px solid #000; /* thickened border */
+			background-color: #fff;
+		}
+		.grey {
+			background-color: #ccc;
+		}
+		#progress-percent {
+			position: absolute;
+			bottom: 10px;
+			left: 10px;
+			font-size: 12px;
+		}
+		#progress-bar {
+			position: fixed;
+			bottom: 30px;
+			left: 50%;
+			transform: translateX(-50%);
+			width: 500px;
+			height: 15px;
+			background-color: #ddd;
+			border-radius: 5px;
+			overflow: hidden;
+		}
+		#progress-bar .fill {
+			width: 0%;
+			height: 100%;
+			background-color: #34E5FF;
+			transition: width 0.3s ease;
+		}
+	</style>
+</head>
+<body>
+	<div class="nav-bar">
+		<div id="color-1" class="nav-button" data-color="#B74F6F" onclick="changeBackgroundColor(this)"></div>
+		<div id="color-2" class="nav-button" data-color="#ADBDFF" onclick="changeBackgroundColor(this)"></div>
+		<div id="color-3" class="nav-button" data-color="#3185FC" onclick="changeBackgroundColor(this)"></div>
+		<div id="color-4" class="nav-button" data-color="#34E5FF" onclick="changeBackgroundColor(this)"></div>
+		<div id="color-5" class="nav-button" data-color="#35281D" onclick="changeBackgroundColor(this)"></div>
+		<div id="progress-percent"></div>
+	</div>
+	<h1>Days in a year - 2024</h1>
+	<table>
+		<tbody>
+			<!-- JavaScript will generate the table cells here -->
+		</tbody>
+	</table>
+	<div id="progress-bar">
+		<div class="fill"></div>
+	</div>
+	<script>
+		const tableBody = document.querySelector('tbody');
+		const progressPercent = document.getElementById('progress-percent');
+		const progressBarFill = document.querySelector('#progress-bar .fill');
+
+		function updateCalendar() {
+			const today = new Date();
+			const year = today.getFullYear();
+			const daysInYear = 365; // assuming 2024 is not a leap year
+			const daysPassed = Math.floor((today - new Date(year, 0, 1)) / (1000 * 60 * 60 * 24));
+
+			let row;
+			let cellCount = 0;
+
+			tableBody.innerHTML = ''; // Clear existing cells
+
+			for (let i = 1; i <= 18; i++) {
+				row = document.createElement('tr');
+				for (let j = 1; j <= 20; j++) {
+					cellCount++;
+					const cell = document.createElement('td');
+					if (cellCount <= daysPassed) {
+						cell.classList.add('grey');
+					}
+					row.appendChild(cell);
+				}
+				tableBody.appendChild(row);
+			}
+
+			// Add the extra row with 5 cells
+			row = document.createElement('tr');
+			for (let i = 1; i <= 5; i++) {
+				cellCount++;
+				const cell = document.createElement('td');
+				if (cellCount <= daysPassed) {
+					cell.classList.add('grey');
+				}
+				row.appendChild(cell);
+			}
+			tableBody.appendChild(row);
+
+			const percentComplete = Math.round((daysPassed / daysInYear) * 100);
+			progressPercent.textContent = `${percentComplete}%`;
+			progressBarFill.style.width = `${percentComplete}%`;
+		}
+
+		// Update calendar initially
+		updateCalendar();
+
+		// Update calendar every day at midnight
+		setInterval(updateCalendar, 1000 * 60 * 60 * 24);
+
+		function changeBackgroundColor(button) {
+			const backgroundColor = button.dataset.color;
+			document.body.style.backgroundColor = backgroundColor;
+		}
+	</script>
+</body>
+</html>
